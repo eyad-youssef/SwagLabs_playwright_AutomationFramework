@@ -25,7 +25,7 @@ test('End to end scenario',async({page})=>{
     await productPage.checkout();
     await addressPage.enterAddressDetails(
         'hassan',
-        'Ali',
+        'youssef',
         '13513'); 
     await addressPage.clickOnContinueButton(); 
     
