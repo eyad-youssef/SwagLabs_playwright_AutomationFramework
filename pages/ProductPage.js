@@ -14,6 +14,13 @@ exports.ProductPage = class ProductPage{
 
   } 
 
+  async chooseFromProducts(){ 
+    // foreach(){ choose}
+    // then get its price and save it 
+    //  then pass it 
+    
+  }
+
   async getProduct(){  
     // await expect(this.producttext).toContainText('Rib snap infant onesie for the junior automation engineer in development. Reinforced 3-snap bottom closure, two-needle hemmed sleeved and bottom wont unravel.');
     await this.product.click(); 
