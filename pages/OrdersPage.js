@@ -20,7 +20,7 @@ import{test,expect} from '@playwright/test';
       this.taxAmount= page.getByText('Tax: $')
       this.totalPrice =page.getByText('Total: $') 
       this.finishButton=  page.getByRole('link', { name: 'FINISH' });
-      this.finishHeading=page.getByRole('heading', { name: 'THANK YOU FOR YOUR ORDER' });
+      this.finishHeading=page.getByRole('heading', { name: 'THANK YOU FOR YOUR ORDERS' });
 
    }  
 
@@ -28,7 +28,7 @@ import{test,expect} from '@playwright/test';
 
 
     async getPaymentInfo(){ 
-      await expect.soft(this.paymentInfo).toContainText('#31337')
+      await expect.soft(this.paymentInfo).toContainText('#321337')
     } 
 
     async getShippingInfo(){ 
