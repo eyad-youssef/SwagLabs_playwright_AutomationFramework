@@ -14,15 +14,10 @@ exports.AddressPage= class AddressPage {
 async enterAddressDetails( firstName,lastName,postalCode){ 
    await this.firstName.fill(firstName);
    await expect.soft(firstName).toHaveLength(3);
-  //  await expect.soft(firstName).toBeInstanceOf(String);
-
    await this.lastName.fill(lastName); 
    await expect.soft(lastName).toHaveLength(3);
-    // await expect.soft(lastName).toBeInstanceOf(String);
-
-    await this.postalCode.fill(postalCode)
-    await expect.soft(postalCode).toHaveLength(5);
-    // await expect.soft(postalCode).toBeInstanceOf(Number);
+   await this.postalCode.fill(postalCode)
+   await expect.soft(postalCode).toHaveLength(5);
 } 
   
 
