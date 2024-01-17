@@ -1,6 +1,5 @@
 const { test, expect,chromium } = require('@playwright/test');
 const{LoginPage}= require('../pages/LoginPage')
-// import{SearchPage} from'../pages/SearchPage'; 
 import{ProductPage} from'../pages/ProductPage'; 
 
 test('product test',async({page})=>{  
