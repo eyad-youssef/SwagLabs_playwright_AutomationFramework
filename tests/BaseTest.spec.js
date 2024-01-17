@@ -19,18 +19,20 @@ test('End to end scenario',async({page})=>{
     const addressPage= new AddressPage(page);
     const ordersPage=  new OrdersPage(page);
    
-    
-    await productPage.getProduct();
+    await productPage.getProduct(); 
+    await productPage.getProductName(); 
+    await productPage.getProductPrice();
     await productPage.goToCart();
     await productPage.checkout();
     await addressPage.enterAddressDetails(
-        'hassan',
-        'youssef',
+        'Amr',
+        'Ali',
         '13513'); 
     await addressPage.clickOnContinueButton(); 
-    
+    //  await page.pause()
         await ordersPage.getPaymentInfo(); 
         await ordersPage.getShippingInfo(); 
         // await ordersPage.getPriceInfo(); 
-    await ordersPage.finishOrder();
+        await ordersPage.getBilItems();
+        await ordersPage.finishOrder();
 })
