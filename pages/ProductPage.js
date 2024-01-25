@@ -19,7 +19,13 @@ exports.ProductPage = class ProductPage{
     await expect.soft(this.addToCartButton).toContainText('ADD TO CART');
     await this.addToCartButton.click();
 
-  } 
+  }  
+
+
+  async getProductName(){ 
+    const productName = this.product.textContent ;
+    return productName; 
+  }
 
   async goToCart(){ 
      await this.cartButton.click();

@@ -30,6 +30,7 @@ test('End to end scenario',async({page})=>{
         'Ali',
         '13513'); 
     await addressPage.clickOnContinueButton(); 
+    await ordersPage.getProductChecked();
     await ordersPage.getPaymentInfo(); 
     await ordersPage.getShippingInfo(); 
     await ordersPage.finishOrder();

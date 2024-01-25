@@ -1,9 +1,10 @@
 
 import{test,expect} from '@playwright/test'; 
+import { ProductPage } from './ProductPage';
 
- exports.OrdersPage = class OrdersPage{  
+ exports.OrdersPage = class OrdersPage extends ProductPage{  
    constructor(page){
-     this.page= page;  
+     super(page);  
 
 
 
@@ -28,7 +29,10 @@ import{test,expect} from '@playwright/test';
 
 
 
-  
+   async getProductChecked(){ 
+   let  x  = this.getProductName; 
+    console.log(x.innerText);
+   }
     async getPaymentInfo(){ 
       await expect.soft(this.paymentInfo).toContainText('#31337')
     } 
