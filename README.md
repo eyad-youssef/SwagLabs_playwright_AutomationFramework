@@ -16,7 +16,7 @@ This repository contains a Playwright project for automated testing of the Swag 
 - [Allure Reports](#allure-reports)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Prerequisites
 
