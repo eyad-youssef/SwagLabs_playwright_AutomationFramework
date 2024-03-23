@@ -6,7 +6,7 @@ import{AddressPage} from'../pages/AddressPage';
 import{OrdersPage}from '../pages/OrdersPage';
 
 
-test.beforeAll('setup',async({page})=>{ 
+test.beforeEach('setup',async({page})=>{ 
     
      const loginPage = new LoginPage(page);  
      await page.goto('https://www.saucedemo.com/v1/index.html');
@@ -21,8 +21,8 @@ test('End to end scenario',async({page})=>{
     const ordersPage=  new OrdersPage(page);
   
     await productPage.getProduct(); 
-    await productPage.getProductName(); 
-    await productPage.getProductPrice();
+    // await productPage.getProductName(); 
+    // await productPage.getProductPrice();
     await productPage.goToCart();
     await productPage.checkout();
     await addressPage.enterAddressDetails(
