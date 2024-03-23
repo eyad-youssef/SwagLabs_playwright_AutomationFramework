@@ -21,8 +21,7 @@ test('End to end scenario',async({page})=>{
     const ordersPage=  new OrdersPage(page);
   
     await productPage.getProduct(); 
-    // await productPage.getProductName(); 
-    // await productPage.getProductPrice();
+   
     await productPage.goToCart();
     await productPage.checkout();
     await addressPage.enterAddressDetails(
