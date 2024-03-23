@@ -5,11 +5,11 @@ pipeline {
   //   } 
   }
   stages { 
-    stage('Checkout') {
-      steps {
-        // Checkout your Playwright project from version control (e.g., Git)
-        checkout scm
-      }
+    // stage('Checkout') {
+    //   steps {
+    //     // Checkout your Playwright project from version control (e.g., Git)
+    //     checkout scm
+    //   }
     stage('install playwright') {
       steps {
         sh '''
