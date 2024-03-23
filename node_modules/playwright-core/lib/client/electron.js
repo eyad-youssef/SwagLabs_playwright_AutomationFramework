@@ -10,6 +10,7 @@ var _channelOwner = require("./channelOwner");
 var _clientHelper = require("./clientHelper");
 var _events = require("./events");
 var _jsHandle = require("./jsHandle");
+var _consoleMessage = require("./consoleMessage");
 var _waiter = require("./waiter");
 var _errors = require("./errors");
 let _Symbol$asyncDispose;
@@ -65,6 +66,8 @@ class ElectronApplication extends _channelOwner.ChannelOwner {
       this._isClosed = true;
       this.emit(_events.Events.ElectronApplication.Close);
     });
+    this._channel.on('console', event => this.emit(_events.Events.ElectronApplication.Console, new _consoleMessage.ConsoleMessage(event)));
+    this._setEventToSubscriptionMapping(new Map([[_events.Events.ElectronApplication.Console, 'console']]));
   }
   process() {
     return this._toImpl().process();

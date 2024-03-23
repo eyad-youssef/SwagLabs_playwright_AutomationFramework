@@ -47,8 +47,8 @@ let _Symbol$asyncDispose;
  * limitations under the License.
  */
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 _Symbol$asyncDispose = Symbol.asyncDispose;
 class BrowserContext extends _channelOwner.ChannelOwner {
   static from(context) {
@@ -79,7 +79,7 @@ class BrowserContext extends _channelOwner.ChannelOwner {
     this._closeReason = void 0;
     this._harRouters = [];
     if (parent instanceof _browser.Browser) this._browser = parent;
-    (_this$_browser = this._browser) === null || _this$_browser === void 0 ? void 0 : _this$_browser._contexts.add(this);
+    (_this$_browser = this._browser) === null || _this$_browser === void 0 || _this$_browser._contexts.add(this);
     this._isChromium = ((_this$_browser2 = this._browser) === null || _this$_browser2 === void 0 ? void 0 : _this$_browser2._name) === 'chromium';
     this.tracing = _tracing.Tracing.from(initializer.tracing);
     this.request = _fetch.APIRequestContext.from(initializer.requestContext);
@@ -413,9 +413,9 @@ class BrowserContext extends _channelOwner.ChannelOwner {
     return _cdpSession.CDPSession.from(result.session);
   }
   _onClose() {
-    var _this$_browserType, _this$_browserType$_c;
+    var _this$_browserType;
     if (this._browser) this._browser._contexts.delete(this);
-    (_this$_browserType = this._browserType) === null || _this$_browserType === void 0 ? void 0 : (_this$_browserType$_c = _this$_browserType._contexts) === null || _this$_browserType$_c === void 0 ? void 0 : _this$_browserType$_c.delete(this);
+    (_this$_browserType = this._browserType) === null || _this$_browserType === void 0 || (_this$_browserType = _this$_browserType._contexts) === null || _this$_browserType === void 0 || _this$_browserType.delete(this);
     this._disposeHarRouters();
     this.emit(_events.Events.BrowserContext.Close, this);
   }
@@ -504,6 +504,6 @@ async function prepareBrowserContextParams(options) {
 }
 function toAcceptDownloadsProtocol(acceptDownloads) {
   if (acceptDownloads === undefined) return undefined;
-  if (acceptDownloads === true) return 'accept';
+  if (acceptDownloads) return 'accept';
   return 'deny';
 }

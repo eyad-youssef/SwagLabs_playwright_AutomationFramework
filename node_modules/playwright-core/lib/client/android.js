@@ -83,7 +83,7 @@ class Android extends _channelOwner.ChannelOwner {
       let closeError;
       const onPipeClosed = () => {
         var _device;
-        (_device = device) === null || _device === void 0 ? void 0 : _device._didClose();
+        (_device = device) === null || _device === void 0 || _device._didClose();
         connection.close(closeError);
       };
       pipe.on('closed', onPipeClosed);

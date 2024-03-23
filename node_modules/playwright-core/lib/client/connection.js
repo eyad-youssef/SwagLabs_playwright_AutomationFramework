@@ -21,7 +21,7 @@ var _playwright = require("./playwright");
 var _electron = require("./electron");
 var _stream = require("./stream");
 var _writableStream = require("./writableStream");
-var _debugLogger = require("../common/debugLogger");
+var _debugLogger = require("../utils/debugLogger");
 var _selectors = require("./selectors");
 var _android = require("./android");
 var _artifact = require("./artifact");
@@ -132,7 +132,7 @@ class Connection extends _events.EventEmitter {
       location,
       internal: !apiName
     };
-    if (this._tracingCount && frames && type !== 'LocalUtils') (_this$_localUtils = this._localUtils) === null || _this$_localUtils === void 0 ? void 0 : _this$_localUtils._channel.addStackToTracingNoReply({
+    if (this._tracingCount && frames && type !== 'LocalUtils') (_this$_localUtils = this._localUtils) === null || _this$_localUtils === void 0 || _this$_localUtils._channel.addStackToTracingNoReply({
       callData: {
         stack: frames,
         id

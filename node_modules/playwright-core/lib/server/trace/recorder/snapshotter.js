@@ -7,7 +7,7 @@ exports.Snapshotter = void 0;
 var _browserContext = require("../../browserContext");
 var _page = require("../../page");
 var _eventsHelper = require("../../../utils/eventsHelper");
-var _debugLogger = require("../../../common/debugLogger");
+var _debugLogger = require("../../../utils/debugLogger");
 var _snapshotterInjected = require("./snapshotterInjected");
 var _utils = require("../../../utils");
 var _utilsBundle = require("../../../utilsBundle");
@@ -83,7 +83,7 @@ class Snapshotter {
     const expression = `window["${this._snapshotStreamer}"].captureSnapshot(${JSON.stringify(snapshotName)})`;
 
     // In a best-effort manner, without waiting for it, mark target element.
-    element === null || element === void 0 ? void 0 : element.callFunctionNoReply((element, callId) => {
+    element === null || element === void 0 || element.callFunctionNoReply((element, callId) => {
       const customEvent = new CustomEvent('__playwright_target__', {
         bubbles: true,
         cancelable: true,

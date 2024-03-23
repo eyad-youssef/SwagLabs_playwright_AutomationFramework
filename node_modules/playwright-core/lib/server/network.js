@@ -126,15 +126,6 @@ class Request extends _instrumentation.SdkObject {
     this._failureText = failureText;
     this._waitForResponsePromise.resolve(null);
   }
-  async _waitForRequestFailure() {
-    const response = await this._waitForResponsePromise;
-    // If response is null it was a failure an we are done.
-    if (!response) return;
-    await response._finishedPromise;
-    if (this.failure()) return;
-    // If request finished without errors, we stall.
-    await new Promise(() => {});
-  }
   _setOverrides(overrides) {
     this._overrides = overrides;
     this._updateHeadersMap();
@@ -241,10 +232,7 @@ class Route extends _instrumentation.SdkObject {
   async abort(errorCode = 'failed') {
     this._startHandling();
     this._request._context.emit(_browserContext.BrowserContext.Events.RequestAborted, this._request);
-    await Promise.race([this._delegate.abort(errorCode),
-    // If the request is already cancelled by the page before we handle the route,
-    // we'll receive loading failed event and will ignore route handling error.
-    this._request._waitForRequestFailure()]);
+    await this._delegate.abort(errorCode);
     this._endHandling();
   }
   async redirectNavigationRequest(url) {
@@ -270,15 +258,12 @@ class Route extends _instrumentation.SdkObject {
     const headers = [...(overrides.headers || [])];
     this._maybeAddCorsHeaders(headers);
     this._request._context.emit(_browserContext.BrowserContext.Events.RequestFulfilled, this._request);
-    await Promise.race([this._delegate.fulfill({
+    await this._delegate.fulfill({
       status: overrides.status || 200,
       headers,
-      body,
+      body: body,
       isBase64
-    }),
-    // If the request is already cancelled by the page before we handle the route,
-    // we'll receive loading failed event and will ignore route handling error.
-    this._request._waitForRequestFailure()]);
+    });
     this._endHandling();
   }
 
@@ -315,10 +300,7 @@ class Route extends _instrumentation.SdkObject {
     }
     this._request._setOverrides(overrides);
     if (!overrides.isFallback) this._request._context.emit(_browserContext.BrowserContext.Events.RequestContinued, this._request);
-    await Promise.race([this._delegate.continue(this._request, overrides),
-    // If the request is already cancelled by the page before we handle the route,
-    // we'll receive loading failed event and will ignore route handling error.
-    this._request._waitForRequestFailure()]);
+    await this._delegate.continue(this._request, overrides);
     this._endHandling();
   }
   _startHandling() {

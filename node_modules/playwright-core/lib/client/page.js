@@ -79,6 +79,7 @@ class Page extends _channelOwner.ChannelOwner {
     this._closeReason = void 0;
     this._closeWasCalled = false;
     this._harRouters = [];
+    this._locatorHandlers = new Map();
     this._browserContext = parent;
     this._timeoutSettings = new _timeoutSettings.TimeoutSettings(this._browserContext._timeoutSettings);
     this.accessibility = new _accessibility.Accessibility(this._channel);
@@ -115,6 +116,9 @@ class Page extends _channelOwner.ChannelOwner {
     this._channel.on('frameDetached', ({
       frame
     }) => this._onFrameDetached(_frame.Frame.from(frame)));
+    this._channel.on('locatorHandlerTriggered', ({
+      uid
+    }) => this._onLocatorHandlerTriggered(uid));
     this._channel.on('route', ({
       route
     }) => this._onRoute(_network2.Route.from(route)));
@@ -304,6 +308,25 @@ class Page extends _channelOwner.ChannelOwner {
       waitUntil
     })).response);
   }
+  async addLocatorHandler(locator, handler) {
+    if (locator._frame !== this._mainFrame) throw new Error(`Locator must belong to the main frame of this page`);
+    const {
+      uid
+    } = await this._channel.registerLocatorHandler({
+      selector: locator._selector
+    });
+    this._locatorHandlers.set(uid, handler);
+  }
+  async _onLocatorHandlerTriggered(uid) {
+    try {
+      const handler = this._locatorHandlers.get(uid);
+      await (handler === null || handler === void 0 ? void 0 : handler());
+    } finally {
+      this._wrapApiCall(() => this._channel.resolveLocatorHandlerNoReply({
+        uid
+      }), true).catch(() => {});
+    }
+  }
   async waitForLoadState(state, options) {
     return await this._mainFrame.waitForLoadState(state, options);
   }
@@ -462,8 +485,7 @@ class Page extends _channelOwner.ChannelOwner {
     return result.binary;
   }
   async _expectScreenshot(options) {
-    var _options$screenshotOp, _options$screenshotOp2;
-    const mask = (_options$screenshotOp = options.screenshotOptions) !== null && _options$screenshotOp !== void 0 && _options$screenshotOp.mask ? (_options$screenshotOp2 = options.screenshotOptions) === null || _options$screenshotOp2 === void 0 ? void 0 : _options$screenshotOp2.mask.map(locator => ({
+    const mask = options !== null && options !== void 0 && options.mask ? options === null || options === void 0 ? void 0 : options.mask.map(locator => ({
       frame: locator._frame._channel,
       selector: locator._selector
     })) : undefined;
@@ -475,10 +497,7 @@ class Page extends _channelOwner.ChannelOwner {
       ...options,
       isNot: !!options.isNot,
       locator,
-      screenshotOptions: {
-        ...options.screenshotOptions,
-        mask
-      }
+      mask
     });
   }
   async title() {
@@ -621,7 +640,7 @@ class Page extends _channelOwner.ChannelOwner {
     const defaultTimeout = this._browserContext._timeoutSettings.defaultTimeout();
     this._browserContext.setDefaultNavigationTimeout(0);
     this._browserContext.setDefaultTimeout(0);
-    (_this$_instrumentatio = this._instrumentation) === null || _this$_instrumentatio === void 0 ? void 0 : _this$_instrumentatio.onWillPause();
+    (_this$_instrumentatio = this._instrumentation) === null || _this$_instrumentatio === void 0 || _this$_instrumentatio.onWillPause();
     await this._closedOrCrashedScope.safeRace(this.context()._channel.pause());
     this._browserContext.setDefaultNavigationTimeout(defaultNavigationTimeout);
     this._browserContext.setDefaultTimeout(defaultTimeout);

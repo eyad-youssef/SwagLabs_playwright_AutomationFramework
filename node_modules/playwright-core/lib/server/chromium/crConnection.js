@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.kBrowserCloseMessageId = exports.ConnectionEvents = exports.CRSession = exports.CRConnection = exports.CDPSession = void 0;
 var _utils = require("../../utils");
 var _events = require("events");
-var _debugLogger = require("../../common/debugLogger");
+var _debugLogger = require("../../utils/debugLogger");
 var _helper = require("../helper");
 var _protocolError = require("../protocolError");
 /**
@@ -154,7 +154,7 @@ class CRSession extends _events.EventEmitter {
       // Message to a closed session, just ignore it.
     } else {
       var _object$error2;
-      (0, _utils.assert)(!object.id, (object === null || object === void 0 ? void 0 : (_object$error2 = object.error) === null || _object$error2 === void 0 ? void 0 : _object$error2.message) || undefined);
+      (0, _utils.assert)(!object.id, (object === null || object === void 0 || (_object$error2 = object.error) === null || _object$error2 === void 0 ? void 0 : _object$error2.message) || undefined);
       Promise.resolve().then(() => {
         if (this._eventListener) this._eventListener(object.method, object.params);
         this.emit(object.method, object.params);

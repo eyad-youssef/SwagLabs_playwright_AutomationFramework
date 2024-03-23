@@ -200,7 +200,6 @@ class Screenshotter {
       progress.throwIfAborted(); // Do not do extra work.
 
       await handle._waitAndScrollIntoViewIfNeeded(progress, true /* waitForVisible */);
-
       progress.throwIfAborted(); // Do not do extra work.
       const boundingBox = await handle.boundingBox();
       (0, _utils.assert)(boundingBox, 'Node is either not visible or not an HTMLElement');

@@ -24,7 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function log(message) {
   var _process$send, _process;
-  (_process$send = (_process = process).send) === null || _process$send === void 0 ? void 0 : _process$send.call(_process, {
+  (_process$send = (_process = process).send) === null || _process$send === void 0 || _process$send.call(_process, {
     method: 'log',
     params: {
       message
@@ -33,7 +33,7 @@ function log(message) {
 }
 function progress(done, total) {
   var _process$send2, _process2;
-  (_process$send2 = (_process2 = process).send) === null || _process$send2 === void 0 ? void 0 : _process$send2.call(_process2, {
+  (_process$send2 = (_process2 = process).send) === null || _process$send2 === void 0 || _process$send2.call(_process2, {
     method: 'progress',
     params: {
       done,

@@ -8,8 +8,9 @@ var _helper = require("../helper");
 var _eventsHelper = require("../../utils/eventsHelper");
 var network = _interopRequireWildcard(require("../network"));
 var _utils = require("../../utils");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _protocolError = require("../protocolError");
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 /**
  * Copyright 2017 Google Inc. All rights reserved.
  * Modifications copyright (c) Microsoft Corporation.
@@ -178,7 +179,7 @@ class CRNetworkManager {
     } else {
       var _existingRequest$_rou;
       const existingRequest = this._requestIdToRequest.get(requestId);
-      const alreadyContinuedParams = existingRequest === null || existingRequest === void 0 ? void 0 : (_existingRequest$_rou = existingRequest._route) === null || _existingRequest$_rou === void 0 ? void 0 : _existingRequest$_rou._alreadyContinuedParams;
+      const alreadyContinuedParams = existingRequest === null || existingRequest === void 0 || (_existingRequest$_rou = existingRequest._route) === null || _existingRequest$_rou === void 0 ? void 0 : _existingRequest$_rou._alreadyContinuedParams;
       if (alreadyContinuedParams && !event.redirectedRequestId) {
         // Sometimes Chromium network stack restarts the request internally.
         // For example, when no-cors request hits a "less public address space", it should be resent with cors.
@@ -266,11 +267,9 @@ class CRNetworkManager {
     if (requestPausedEvent) {
       // We do not support intercepting redirects.
       if (redirectedFrom || !this._userRequestInterceptionEnabled && this._protocolRequestInterceptionEnabled) {
-        var _redirectedFrom, _redirectedFrom$_orig, _redirectedFrom$_orig2;
-        let headers = undefined;
-        const previousHeaderOverrides = (_redirectedFrom = redirectedFrom) === null || _redirectedFrom === void 0 ? void 0 : (_redirectedFrom$_orig = _redirectedFrom._originalRequestRoute) === null || _redirectedFrom$_orig === void 0 ? void 0 : (_redirectedFrom$_orig2 = _redirectedFrom$_orig._alreadyContinuedParams) === null || _redirectedFrom$_orig2 === void 0 ? void 0 : _redirectedFrom$_orig2.headers;
+        var _redirectedFrom;
         // Chromium does not preserve header overrides between redirects, so we have to do it ourselves.
-        if (previousHeaderOverrides) headers = network.mergeHeaders([(0, _utils.headersObjectToArray)(requestPausedEvent.request.headers, '\n'), previousHeaderOverrides]);
+        const headers = (_redirectedFrom = redirectedFrom) === null || _redirectedFrom === void 0 || (_redirectedFrom = _redirectedFrom._originalRequestRoute) === null || _redirectedFrom === void 0 || (_redirectedFrom = _redirectedFrom._alreadyContinuedParams) === null || _redirectedFrom === void 0 ? void 0 : _redirectedFrom.headers;
         this._session._sendMayFail('Fetch.continueRequest', {
           requestId: requestPausedEvent.requestId,
           headers
@@ -371,11 +370,11 @@ class CRNetworkManager {
       response._serverAddrFinished();
     }
     response._securityDetailsFinished({
-      protocol: responsePayload === null || responsePayload === void 0 ? void 0 : (_responsePayload$secu = responsePayload.securityDetails) === null || _responsePayload$secu === void 0 ? void 0 : _responsePayload$secu.protocol,
-      subjectName: responsePayload === null || responsePayload === void 0 ? void 0 : (_responsePayload$secu2 = responsePayload.securityDetails) === null || _responsePayload$secu2 === void 0 ? void 0 : _responsePayload$secu2.subjectName,
-      issuer: responsePayload === null || responsePayload === void 0 ? void 0 : (_responsePayload$secu3 = responsePayload.securityDetails) === null || _responsePayload$secu3 === void 0 ? void 0 : _responsePayload$secu3.issuer,
-      validFrom: responsePayload === null || responsePayload === void 0 ? void 0 : (_responsePayload$secu4 = responsePayload.securityDetails) === null || _responsePayload$secu4 === void 0 ? void 0 : _responsePayload$secu4.validFrom,
-      validTo: responsePayload === null || responsePayload === void 0 ? void 0 : (_responsePayload$secu5 = responsePayload.securityDetails) === null || _responsePayload$secu5 === void 0 ? void 0 : _responsePayload$secu5.validTo
+      protocol: responsePayload === null || responsePayload === void 0 || (_responsePayload$secu = responsePayload.securityDetails) === null || _responsePayload$secu === void 0 ? void 0 : _responsePayload$secu.protocol,
+      subjectName: responsePayload === null || responsePayload === void 0 || (_responsePayload$secu2 = responsePayload.securityDetails) === null || _responsePayload$secu2 === void 0 ? void 0 : _responsePayload$secu2.subjectName,
+      issuer: responsePayload === null || responsePayload === void 0 || (_responsePayload$secu3 = responsePayload.securityDetails) === null || _responsePayload$secu3 === void 0 ? void 0 : _responsePayload$secu3.issuer,
+      validFrom: responsePayload === null || responsePayload === void 0 || (_responsePayload$secu4 = responsePayload.securityDetails) === null || _responsePayload$secu4 === void 0 ? void 0 : _responsePayload$secu4.validFrom,
+      validTo: responsePayload === null || responsePayload === void 0 || (_responsePayload$secu5 = responsePayload.securityDetails) === null || _responsePayload$secu5 === void 0 ? void 0 : _responsePayload$secu5.validTo
     });
     this._responseExtraInfoTracker.processResponse(request._requestId, response, hasExtraInfo);
     return response;
@@ -543,28 +542,42 @@ class RouteImpl {
       method: overrides.method,
       postData: overrides.postData ? overrides.postData.toString('base64') : undefined
     };
-    await this._session.send('Fetch.continueRequest', this._alreadyContinuedParams);
+    await catchDisallowedErrors(async () => {
+      await this._session.send('Fetch.continueRequest', this._alreadyContinuedParams);
+    });
   }
   async fulfill(response) {
     const body = response.isBase64 ? response.body : Buffer.from(response.body).toString('base64');
     const responseHeaders = splitSetCookieHeader(response.headers);
-    await this._session.send('Fetch.fulfillRequest', {
-      requestId: this._interceptionId,
-      responseCode: response.status,
-      responsePhrase: network.STATUS_TEXTS[String(response.status)],
-      responseHeaders,
-      body
+    await catchDisallowedErrors(async () => {
+      await this._session.send('Fetch.fulfillRequest', {
+        requestId: this._interceptionId,
+        responseCode: response.status,
+        responsePhrase: network.STATUS_TEXTS[String(response.status)],
+        responseHeaders,
+        body
+      });
     });
   }
   async abort(errorCode = 'failed') {
     const errorReason = errorReasons[errorCode];
     (0, _utils.assert)(errorReason, 'Unknown error code: ' + errorCode);
-    // In certain cases, protocol will return error if the request was already canceled
-    // or the page was closed. We should tolerate these errors.
-    await this._session._sendMayFail('Fetch.failRequest', {
-      requestId: this._interceptionId,
-      errorReason
+    await catchDisallowedErrors(async () => {
+      await this._session.send('Fetch.failRequest', {
+        requestId: this._interceptionId,
+        errorReason
+      });
     });
+  }
+}
+
+// In certain cases, protocol will return error if the request was already canceled
+// or the page was closed. We should tolerate these errors but propagate other.
+async function catchDisallowedErrors(callback) {
+  try {
+    return await callback();
+  } catch (e) {
+    if ((0, _protocolError.isProtocolError)(e) && e.message.includes('Invalid http status code or phrase')) throw e;
   }
 }
 function splitSetCookieHeader(headers) {
@@ -702,7 +715,6 @@ class ResponseExtraInfoTracker {
 
     // We are not done yet.
   }
-
   _stopTracking(requestId) {
     this._requests.delete(requestId);
   }

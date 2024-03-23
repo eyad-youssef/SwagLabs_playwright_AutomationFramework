@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ChannelOwner = void 0;
 var _events = require("events");
 var _validator = require("../protocol/validator");
-var _debugLogger = require("../common/debugLogger");
+var _debugLogger = require("../utils/debugLogger");
 var _stackTrace = require("../utils/stackTrace");
 var _utils = require("../utils");
 var _zones = require("../utils/zones");
@@ -185,7 +185,7 @@ class ChannelOwner extends _events.EventEmitter {
       const result = await _zones.zones.run('apiZone', apiZone, async () => {
         return await func(apiZone);
       });
-      csi === null || csi === void 0 ? void 0 : csi.onApiCallEnd(callCookie);
+      csi === null || csi === void 0 || csi.onApiCallEnd(callCookie);
       logApiCall(logger, `<= ${apiName} succeeded`, isInternal);
       return result;
     } catch (e) {
@@ -193,7 +193,7 @@ class ChannelOwner extends _events.EventEmitter {
       if (apiName && !apiName.includes('<anonymous>')) e.message = apiName + ': ' + e.message;
       const stackFrames = '\n' + (0, _stackTrace.stringifyStackFrames)(stackTrace.frames).join('\n') + innerError;
       if (stackFrames.trim()) e.stack = e.message + stackFrames;else e.stack = '';
-      csi === null || csi === void 0 ? void 0 : csi.onApiCallEnd(callCookie, e);
+      csi === null || csi === void 0 || csi.onApiCallEnd(callCookie, e);
       logApiCall(logger, `<= ${apiName} failed`, isInternal);
       throw e;
     }

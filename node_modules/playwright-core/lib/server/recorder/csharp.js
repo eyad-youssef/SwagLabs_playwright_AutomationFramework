@@ -138,7 +138,7 @@ class CSharpLanguageGenerator {
         return `await Expect(${subject}.${this._asLocator(action.selector)}).ToBeVisibleAsync();`;
       case 'assertValue':
         {
-          const assertion = action.value ? `ToHaveValueAsync(${quote(action.value)})` : `ToBeEmpty()`;
+          const assertion = action.value ? `ToHaveValueAsync(${quote(action.value)})` : `ToBeEmptyAsync()`;
           return `await Expect(${subject}.${this._asLocator(action.selector)}).${assertion};`;
         }
     }

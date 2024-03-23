@@ -22,12 +22,12 @@ var _wkInput = require("./wkInput");
 var _wkInterceptableRequest = require("./wkInterceptableRequest");
 var _wkProvisionalPage = require("./wkProvisionalPage");
 var _wkWorkers = require("./wkWorkers");
-var _debugLogger = require("../../common/debugLogger");
+var _debugLogger = require("../../utils/debugLogger");
 var _manualPromise = require("../../utils/manualPromise");
 var _browserContext = require("../browserContext");
 var _errors = require("../errors");
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -641,7 +641,6 @@ class WKPage {
       headers: (0, _utils.headersArrayToObject)(this._calculateExtraHTTPHeaders(), false /* lowerCase */)
     });
   }
-
   _calculateExtraHTTPHeaders() {
     const locale = this._browserContext._options.locale;
     const headers = network.mergeHeaders([this._browserContext._options.extraHTTPHeaders, this._page.extraHTTPHeaders(), locale ? network.singleHeader('Accept-Language', locale) : undefined]);
@@ -727,7 +726,6 @@ class WKPage {
       enabled
     }).catch(() => {}); // target can be closed.
   }
-
   async reload() {
     await this._session.send('Page.reload');
   }
@@ -766,7 +764,7 @@ class WKPage {
       scripts.push('delete window.ondevicemotion');
       scripts.push('delete window.ondeviceorientation');
     }
-    scripts.push('if (!window.safari) window.safari = {};');
+    scripts.push('if (!window.safari) window.safari = { pushNotification: { toString() { return "[object SafariRemoteNotification]"; } } };');
     scripts.push('if (!window.GestureEvent) window.GestureEvent = function GestureEvent() {};');
     for (const binding of this._page.allBindings()) scripts.push(binding.source);
     scripts.push(...this._browserContext.initScripts);
@@ -1072,14 +1070,14 @@ class WKPage {
     // event from protocol. @see https://crbug.com/883475
     const response = request.request._existingResponse();
     if (response) {
-      var _event$metrics, _event$metrics2, _event$metrics2$secur, _responseReceivedPayl, _responseReceivedPayl2, _responseReceivedPayl3, _responseReceivedPayl4, _responseReceivedPayl5, _responseReceivedPayl6, _event$metrics3, _event$metrics$respon, _event$metrics4, _event$metrics$respon2, _event$metrics5;
+      var _event$metrics, _event$metrics2, _responseReceivedPayl, _responseReceivedPayl2, _responseReceivedPayl3, _event$metrics3, _event$metrics$respon, _event$metrics4, _event$metrics$respon2, _event$metrics5;
       const responseReceivedPayload = this._requestIdToResponseReceivedPayloadEvent.get(request._requestId);
-      response._serverAddrFinished(parseRemoteAddress(event === null || event === void 0 ? void 0 : (_event$metrics = event.metrics) === null || _event$metrics === void 0 ? void 0 : _event$metrics.remoteAddress));
+      response._serverAddrFinished(parseRemoteAddress(event === null || event === void 0 || (_event$metrics = event.metrics) === null || _event$metrics === void 0 ? void 0 : _event$metrics.remoteAddress));
       response._securityDetailsFinished({
-        protocol: isLoadedSecurely(response.url(), response.timing()) ? (_event$metrics2 = event.metrics) === null || _event$metrics2 === void 0 ? void 0 : (_event$metrics2$secur = _event$metrics2.securityConnection) === null || _event$metrics2$secur === void 0 ? void 0 : _event$metrics2$secur.protocol : undefined,
-        subjectName: responseReceivedPayload === null || responseReceivedPayload === void 0 ? void 0 : (_responseReceivedPayl = responseReceivedPayload.response.security) === null || _responseReceivedPayl === void 0 ? void 0 : (_responseReceivedPayl2 = _responseReceivedPayl.certificate) === null || _responseReceivedPayl2 === void 0 ? void 0 : _responseReceivedPayl2.subject,
-        validFrom: responseReceivedPayload === null || responseReceivedPayload === void 0 ? void 0 : (_responseReceivedPayl3 = responseReceivedPayload.response.security) === null || _responseReceivedPayl3 === void 0 ? void 0 : (_responseReceivedPayl4 = _responseReceivedPayl3.certificate) === null || _responseReceivedPayl4 === void 0 ? void 0 : _responseReceivedPayl4.validFrom,
-        validTo: responseReceivedPayload === null || responseReceivedPayload === void 0 ? void 0 : (_responseReceivedPayl5 = responseReceivedPayload.response.security) === null || _responseReceivedPayl5 === void 0 ? void 0 : (_responseReceivedPayl6 = _responseReceivedPayl5.certificate) === null || _responseReceivedPayl6 === void 0 ? void 0 : _responseReceivedPayl6.validUntil
+        protocol: isLoadedSecurely(response.url(), response.timing()) ? (_event$metrics2 = event.metrics) === null || _event$metrics2 === void 0 || (_event$metrics2 = _event$metrics2.securityConnection) === null || _event$metrics2 === void 0 ? void 0 : _event$metrics2.protocol : undefined,
+        subjectName: responseReceivedPayload === null || responseReceivedPayload === void 0 || (_responseReceivedPayl = responseReceivedPayload.response.security) === null || _responseReceivedPayl === void 0 || (_responseReceivedPayl = _responseReceivedPayl.certificate) === null || _responseReceivedPayl === void 0 ? void 0 : _responseReceivedPayl.subject,
+        validFrom: responseReceivedPayload === null || responseReceivedPayload === void 0 || (_responseReceivedPayl2 = responseReceivedPayload.response.security) === null || _responseReceivedPayl2 === void 0 || (_responseReceivedPayl2 = _responseReceivedPayl2.certificate) === null || _responseReceivedPayl2 === void 0 ? void 0 : _responseReceivedPayl2.validFrom,
+        validTo: responseReceivedPayload === null || responseReceivedPayload === void 0 || (_responseReceivedPayl3 = responseReceivedPayload.response.security) === null || _responseReceivedPayl3 === void 0 || (_responseReceivedPayl3 = _responseReceivedPayl3.certificate) === null || _responseReceivedPayl3 === void 0 ? void 0 : _responseReceivedPayl3.validUntil
       });
       if ((_event$metrics3 = event.metrics) !== null && _event$metrics3 !== void 0 && _event$metrics3.protocol) response._setHttpVersion(event.metrics.protocol);
       response.setEncodedBodySize((_event$metrics$respon = (_event$metrics4 = event.metrics) === null || _event$metrics4 === void 0 ? void 0 : _event$metrics4.responseBodyBytesReceived) !== null && _event$metrics$respon !== void 0 ? _event$metrics$respon : null);

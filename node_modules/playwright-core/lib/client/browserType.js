@@ -150,7 +150,7 @@ class BrowserType extends _channelOwner.ChannelOwner {
           for (const page of context.pages()) page._onClose();
           context._onClose();
         }
-        (_browser2 = browser) === null || _browser2 === void 0 ? void 0 : _browser2._didClose();
+        (_browser2 = browser) === null || _browser2 === void 0 || _browser2._didClose();
         connection.close(closeError);
       };
       pipe.on('closed', onPipeClosed);
