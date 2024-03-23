@@ -1,10 +1,15 @@
 pipeline {
-  agent { 
-    docker { 
-      image 'mcr.microsoft.com/playwright:v1.17.2-focal'
-    } 
+  // agent { 
+  //   docker { 
+  //     image 'mcr.microsoft.com/playwright:v1.17.2-focal'
+  //   } 
   }
-  stages {
+  stages { 
+    stage('Checkout') {
+      steps {
+        // Checkout your Playwright project from version control (e.g., Git)
+        checkout scm
+      }
     stage('install playwright') {
       steps {
         sh '''
