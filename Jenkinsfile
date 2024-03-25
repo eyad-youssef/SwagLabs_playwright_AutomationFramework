@@ -14,21 +14,21 @@ pipeline {
     }
     stage('install playwright') {
       steps {
-        sh '''
-          npm i -D @playwright/test
-          npx playwright install
-        '''
+        
+           bat 'choco install nodejs-lts -y'
+        bat 'npm install'
+       
       }
     }
     
     stage('test') {
       steps {
-        sh ' npx playwright test BaseTest.spec.js --project=chromium --headed --reporter=allure-playwright'
+        bat ' npx playwright test BaseTest.spec.js --project=chromium --headed --reporter=allure-playwright'
       } 
     }
     stage('Generate Allure Report') { 
             steps { 
-                sh 'allure generate allure-results --clean -o allure-report' 
+                bat 'allure generate allure-results --clean -o allure-report' 
             } 
         } 
      
