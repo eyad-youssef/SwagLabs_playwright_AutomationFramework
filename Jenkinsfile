@@ -24,12 +24,12 @@ pipeline {
     
     stage('test') {
       steps {
-        bat 'npx playwright test --spec tests/BaseTest.spec.js --project=chromium '
+        bat 'npx playwright test tests/BaseTest.spec.js --project=chromium '
       } 
     }
     stage('Generate Allure Report') { 
             steps { 
-                bat 'allure generate allure-results --clean -o allure-report' 
+                echo 'allure generate allure-results --clean -o allure-report' 
             } 
         } 
      
