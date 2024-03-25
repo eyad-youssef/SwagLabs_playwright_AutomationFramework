@@ -1,5 +1,5 @@
 pipeline {
-  //  agent { docker { image 'mcr.microsoft.com/playwright:v1.42.1-jammy' } }
+   agent any
     // tools { 
     //     nodejs 'NodeJS' 
     // } 
