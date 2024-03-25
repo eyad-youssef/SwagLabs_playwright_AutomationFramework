@@ -8,14 +8,15 @@ pipeline {
     stage('Checkout') {
       steps {
         // Checkout your Playwright project from version control (e.g., Git)
-        checkout scm
+        git 'https://github.com/eyad-youssef/SwagLabs_playwright_AutomationFramework.git'
+        // checkout scm
       }
     }
     stage('install playwright') {
       steps {
         sh '''
-          npm install
-          npm install playwright
+          npm i -D @playwright/test
+          npx playwright install
         '''
       }
     }
