@@ -36,7 +36,7 @@ pipeline {
             } 
         } 
      
-
+  }
     
   post { 
         always { 
@@ -60,4 +60,5 @@ pipeline {
                  body: 'The Playwright tests failed. Please check the Jenkins logs and the Allure report for details.' 
         } 
     } 
-} 
+}
+
