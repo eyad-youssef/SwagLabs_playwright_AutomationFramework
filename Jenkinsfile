@@ -24,7 +24,7 @@ pipeline {
     
     stage('test') {
       steps {
-        bat 'npx playwright test tests/BaseTest.spec.js --project=chromium '
+        bat 'npx playwright test ./tests/BaseTest.spec.js --project=chromium '
       } 
     }
     stage('Generate Allure Report') { 
