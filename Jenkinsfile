@@ -35,27 +35,27 @@ pipeline {
      
   }
     
-  // post { 
-  //       always { 
-  //           archiveArtifacts artifacts: 'allure-report/**', fingerprint: true 
-  //           allure([ 
-  //               includeProperties: false,  
-  //               jdk: '',  
-  //               results: [[path: 'allure-results']] 
-  //           ]) 
-  //       } 
+  post { 
+        // always { 
+        //     archiveArtifacts artifacts: 'allure-report/**', fingerprint: true 
+        //     allure([ 
+        //         includeProperties: false,  
+        //         jdk: '',  
+        //         results: [[path: 'allure-results']] 
+        //     ]) 
+        // } 
  
-  //       success { 
-  //           mail to: 'youssefeyad105@gmail.com', 
-  //                subject: 'Playwright Test Execution Success', 
-  //                body: 'The Playwright tests executed successfully. Please check the Allure report for details.' 
-  //       } 
+        success { 
+            mail to: 'youssefeyad105@gmail.com', 
+                 subject: 'Playwright Test Execution Success', 
+                 body: 'The Playwright tests executed successfully. Please check the Allure report for details.' 
+        } 
  
-  //       failure { 
-  //           mail to: 'youssefeyad105@gmail.com', 
-  //                subject: 'Playwright Test Execution Failure', 
-  //                body: 'The Playwright tests failed. Please check the Jenkins logs and the Allure report for details.' 
-  //       } 
-  //   } 
+        failure { 
+            mail to: 'youssefeyad105@gmail.com', 
+                 subject: 'Playwright Test Execution Failure', 
+                 body: 'The Playwright tests failed. Please check the Jenkins logs and the Allure report for details.' 
+        } 
+    } 
 }
 
