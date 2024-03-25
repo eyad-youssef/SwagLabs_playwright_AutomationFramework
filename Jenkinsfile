@@ -11,7 +11,7 @@ pipeline {
       steps {
         sh '''
           npm install
-          npm i -D @playwright/test
+         
           npx playwright install
         '''
       }
@@ -20,7 +20,7 @@ pipeline {
     stage('test') {
       steps {
         sh '''
-          npm ci
+         
           npx playwright test BaseTest.spec.js --project=chromium --headed
           px playwright test --reporter=allure-playwright
         '''
