@@ -1,5 +1,5 @@
 pipeline {
-   agent any
+   agent { docker { image 'mcr.microsoft.com/playwright:v1.42.1-jammy' } }
     // tools { 
     //     nodejs 'NodeJS' 
     // } 
@@ -15,7 +15,7 @@ pipeline {
     stage('install playwright') {
       steps {
         
-           bat 'choco install nodejs-lts -y'
+           bat 'npm ci'
         bat 'npm install'
        
       }
