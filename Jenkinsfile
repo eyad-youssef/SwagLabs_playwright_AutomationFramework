@@ -17,13 +17,14 @@ pipeline {
         
            bat 'npm ci'
         bat 'npm install'
+        bat 'npx playwright install'
        
       }
     }
     
     stage('test') {
       steps {
-        bat ' npx playwright test BaseTest.spec.js --project=chromium --headed --reporter=allure-playwright'
+        bat 'npx playwright test '
       } 
     }
     stage('Generate Allure Report') { 
