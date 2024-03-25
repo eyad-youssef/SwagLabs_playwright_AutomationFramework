@@ -1,5 +1,9 @@
 pipeline {
    agent any
+    tools { 
+        nodejs 'NodeJS' 
+    } 
+
   stages { 
     stage('Checkout') {
       steps {
@@ -18,11 +22,7 @@ pipeline {
     
     stage('test') {
       steps {
-        sh '''
-         
-         
-          npx playwright test --reporter=allure-playwright
-        '''
+        sh ' npx playwright test BaseTest.spec.js --project=chromium --headed --reporter=allure-playwright'
       } 
     }
     stage('Generate Allure Report') { 
