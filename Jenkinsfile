@@ -24,7 +24,7 @@ pipeline {
     
     stage('test') {
       steps {
-        bat 'npx run BaseTest'
+        bat 'npm run BaseTest'
       } 
     }
     stage('Generate Allure Report') { 
