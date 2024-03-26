@@ -36,14 +36,14 @@ pipeline {
   }
     
   post { 
-        // always { 
-        //     archiveArtifacts artifacts: 'allure-report/**', fingerprint: true 
-        //     allure([ 
-        //         includeProperties: false,  
-        //         jdk: '',  
-        //         results: [[path: 'allure-results']] 
-        //     ]) 
-        // } 
+        always { 
+            archiveArtifacts artifacts: 'allure-report/**', fingerprint: true 
+            allure([ 
+                includeProperties: false,  
+                jdk: '',  
+                results: [[path: 'allure-results']] 
+            ]) 
+        } 
  
         success { 
             mail to: 'youssefeyad105@gmail.com', 
