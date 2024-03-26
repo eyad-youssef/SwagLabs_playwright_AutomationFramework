@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": { 
-    "testCase":"npx playwright test --project=chromium"
-  },
+  "scripts": {
+    "testCase": "npx playwright test - project=chromium"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
