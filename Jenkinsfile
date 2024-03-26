@@ -30,6 +30,7 @@ pipeline {
     stage('Generate Allure Report') { 
             steps { 
                 bat 'allure generate allure-results --clean -o allure-report' 
+                bat'allure open allure-report'
             } 
         } 
      
