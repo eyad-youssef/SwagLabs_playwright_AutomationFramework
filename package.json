@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": { 
-    "testCase":"npx playwright test BaseTest.spec.js --project=chromium --headed"
+    "testCase":"npx playwright test BaseTest.spec.js --project=chromium "
   },
   "keywords": [],
   "author": "",
