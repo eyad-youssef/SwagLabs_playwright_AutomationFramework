@@ -24,7 +24,7 @@ pipeline {
     
     stage('test') {
       steps {
-        bat 'npm run testCase'
+        bat ' npx playwright test BaseTest.spec.js --project=chromium --headed'
       } 
     }
     stage('Generate Allure Report') { 
