@@ -24,12 +24,12 @@ pipeline {
     
     stage('test') {
       steps {
-        bat 'npm run'
+        bat 'npm run testCase'
       } 
     }
     stage('Generate Allure Report') { 
             steps { 
-                echo 'allure generate allure-results --clean -o allure-report' 
+                bat 'allure generate allure-results --clean -o allure-report' 
             } 
         } 
      
