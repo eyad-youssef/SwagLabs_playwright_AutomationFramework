@@ -54,7 +54,7 @@ pipeline {
       attachmentsPattern: 'path\\to\\allure-report\\**\\*',
       to: 'youssefeyad105@gmail.com',
       mimeType: 'text/html',
-      compress: true
+      // compress: true
     )
     } 
  
@@ -65,7 +65,7 @@ pipeline {
       attachmentsPattern: 'path\\to\\allure-report\\**\\*',
       to: 'youssefeyad105@gmail.com',
       mimeType: 'text/html',
-      compress: true
+      // compress: true
     ) } 
     } 
 }
