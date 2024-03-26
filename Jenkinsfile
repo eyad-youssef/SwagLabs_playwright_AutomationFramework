@@ -24,7 +24,7 @@ pipeline {
     
     stage('test') {
       steps {
-        bat 'npm run playwrightproject'
+        bat 'npm run -BaseTest'
       } 
     }
     stage('Generate Allure Report') { 
