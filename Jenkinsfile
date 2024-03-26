@@ -38,25 +38,35 @@ pipeline {
     
   post { 
         always { 
-            archiveArtifacts artifacts: 'allure-report/**', fingerprint: true 
-            allure([ 
-                includeProperties: false,  
-                jdk: '',  
-                results: [[path: 'allure-results']] 
-            ]) 
+            // archiveArtifacts artifacts: 'allure-report/**', fingerprint: true 
+            // allure([ 
+            //     includeProperties: false,  
+            //     jdk: '',  
+            //     results: [[path: 'allure-results']] 
+            // ])  
+             bat '"C:\\path\\to\\allure\\bin\\allure" generate "path\\to\\allure-results" -o "path\\to\\allure-report"'
         } 
  
         success { 
-            mail to: 'youssefeyad105@gmail.com', 
-                 subject: 'Playwright Test Execution Success', 
-                 body: 'The Playwright tests executed successfully. Please check the Allure report for details.' 
-        } 
+             emailext(
+      subject: "Allure Report - ${currentBuild.fullDisplayName} - Build Successful",
+      body: "Please find the Allure report attached.",
+      attachmentsPattern: 'path\\to\\allure-report\\**\\*',
+      to: 'youssefeyad105@gmail.com',
+      mimeType: 'text/html',
+      compress: true
+    )
+    } 
  
         failure { 
-            mail to: 'youssefeyad105@gmail.com', 
-                 subject: 'Playwright Test Execution Failure', 
-                 body: 'The Playwright tests failed. Please check the Jenkins logs and the Allure report for details.' 
-        } 
+             emailext(
+      subject: "Allure Report - ${currentBuild.fullDisplayName} - Build Failed",
+      body: "Please find the Allure report attached.",
+      attachmentsPattern: 'path\\to\\allure-report\\**\\*',
+      to: 'youssefeyad105@gmail.com',
+      mimeType: 'text/html',
+      compress: true
+    ) } 
     } 
 }
 
